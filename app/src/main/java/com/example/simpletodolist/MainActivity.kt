@@ -2,10 +2,10 @@ package com.example.simpletodolist
 
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -89,6 +89,8 @@ fun ToDoListScreen(
     var title by rememberSaveable { mutableStateOf("") }
     var description by rememberSaveable { mutableStateOf("") }
 
+    val context = LocalContext.current
+
     Column(modifier = Modifier.fillMaxSize().padding(16.dp).padding(top = 40.dp)) {
         Text("Simple To Do List", fontSize = 26.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
         Spacer(Modifier.height(16.dp))
@@ -98,10 +100,12 @@ fun ToDoListScreen(
 
         Button(
             onClick = {
-                if (title.isNotBlank()) {
+                if (title.isNotBlank() and description.isNotBlank()) {
                     onTasksChange(tasks + Task(title.trim(), description.trim()))
                     title = ""
                     description = ""
+                } else {
+                    Toast.makeText(context, "Title and description cannot be empty.", Toast.LENGTH_SHORT).show()
                 }
             },
             modifier = Modifier.padding(top = 8.dp).align(Alignment.End)
@@ -110,7 +114,7 @@ fun ToDoListScreen(
         Spacer(Modifier.height(12.dp))
 
         LazyColumn {
-            items(tasks.indices.toList()) { index ->
+            items(tasks.indices.toList().reversed()) { index ->
                 val task = tasks[index]
                 ToDoItem(
                     task = task,
@@ -130,7 +134,7 @@ fun ToDoItem(task: Task, onRemove: () -> Unit, onEdit: () -> Unit) {
     var done by rememberSaveable { mutableStateOf(false) }
 
     Card(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).clickable { onEdit() },
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (done) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.background
         ),
@@ -165,8 +169,8 @@ fun TaskDetailScreen(task: Task, onSave: (Task) -> Unit, onBack: () -> Unit) {
     ) {
         Text("Edit Task", style = MaterialTheme.typography.headlineSmall)
         Spacer(Modifier.height(16.dp))
-        OutlinedTextField(value = title, onValueChange = { title = it }, label = { Text("Title of task") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
-        OutlinedTextField(value = description, onValueChange = { description = it }, label = { Text("Description of task") }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp))
+        OutlinedTextField(value = title, onValueChange = { title = it }, label = { Text("Title  new task") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+        OutlinedTextField(value = description, onValueChange = { description = it }, label = { Text("Description of new task") }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp))
         Spacer(Modifier.height(16.dp))
         Row {
             Button(onClick = { onSave(Task(title, description)) }) { Text("Save") }
