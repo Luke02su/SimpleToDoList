@@ -44,7 +44,7 @@ It allows users to **add, edit, mark, and remove** tasks — and all data is **s
 ## 📱 How It Works
 
 1. Type a **title** and an optional **description** for your task.  
-2. Tap **+ Add** to include it in the list.  
+2. Tap **+ Add** to include it in the decreasing list.  
 3. Tap the edit icon ✏️​ to modify it.
 4. Tap the trash icon 🗑️ to remove it.  
 5. Check the box to mark a task as completed.  
