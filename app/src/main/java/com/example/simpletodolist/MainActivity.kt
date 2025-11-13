@@ -86,6 +86,7 @@ fun ToDoListScreen(
     var title by rememberSaveable { mutableStateOf("") }
     var description by rememberSaveable { mutableStateOf("") }
 
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Text("Simple To Do List", fontSize = 26.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
         Spacer(Modifier.height(16.dp))
 
@@ -169,7 +170,7 @@ fun TaskDetailScreen(task: Task, onSave: (Task) -> Unit, onBack: () -> Unit) {
     }
 }
 
-// ---------- Persistência simples usando SharedPreferences ----------
+// Save tasks
 fun saveTasks(context: Context, tasks: List<Task>) {
     val jsonArray = JSONArray()
     tasks.forEach {
